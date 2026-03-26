@@ -18,17 +18,26 @@
 
     <main class="container main-layout">
         <section class="feed">
-            <h2>Recent Posts</h2>
+            <h2>Recent Activity</h2>
             <div id="posts-container">
-                <p>Loading posts...</p>
+                <p class="loading">Discovering the verse...</p>
             </div>
         </section>
 
         <aside class="sidebar">
-            <h3>Top Communities</h3>
-            <ul id="communities-list">
-                <li>Loading...</li>
-            </ul>
+            <div class="sidebar-section">
+                <h3>Discover Communities</h3>
+                <ul id="communities-list">
+                    <li class="loading">Loading...</li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3>About ThreadVerse</h3>
+                <p style="font-size: 0.85rem; color: var(--text-secondary);">
+                    A text-only, community-driven discussion platform built for speed and simplicity. No ads, no tracking, just conversations.
+                </p>
+            </div>
         </aside>
     </main>
 

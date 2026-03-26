@@ -3,7 +3,7 @@ const pool = require('../../lib/db');
 module.exports = async (req, res) => {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { id } = req.query;
+  const id = req.query.id || req.params.id;
 
   try {
     const result = await pool.query(`

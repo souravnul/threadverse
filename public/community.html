@@ -41,18 +41,29 @@
         </div>
     </header>
 
-    <main class="container main-layout" style="grid-template-columns: 1fr;">
-        <div id="alert-container"></div>
-        <div id="community-header-container">
-            <p class="loading">Loading community...</p>
-        </div>
-
+    <main class="container main-layout">
         <section class="feed">
-            <h2>Community Posts</h2>
+            <div id="alert-container"></div>
+            <div id="community-header-container">
+                <p class="loading">Aligning the stars...</p>
+            </div>
+
+            <h2 style="margin: 2rem 0 1rem;">Community Feed</h2>
             <div id="posts-container">
-                <p class="loading">Loading posts...</p>
+                <p class="loading">Scanning for signals...</p>
             </div>
         </section>
+
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3>Community Rules</h3>
+                <ul style="font-size: 0.85rem; color: var(--text-secondary); padding-left: 1.25rem;">
+                    <li>Be respectful</li>
+                    <li>Text only, no media</li>
+                    <li>No hate speech</li>
+                </ul>
+            </div>
+        </aside>
     </main>
 
     <script src="/js/utils.js"></script>
