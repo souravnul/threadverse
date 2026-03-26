@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThreadVerse - Profile</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <h1 class="logo"><a href="/">ThreadVerse</a></h1>
+            <nav id="nav-links"></nav>
+        </div>
+    </header>
+
+    <main class="container main-layout" style="grid-template-columns: 1fr;">
+        <div id="profile-header" style="background-color: var(--surface-color); padding: 2rem; border-radius: 0.5rem; border: 1px solid var(--border-color); margin-bottom: 2rem;">
+            <h1 id="prof-username">Loading Profile...</h1>
+            <p id="prof-joined" style="color: var(--text-secondary); margin-top: 0.5rem;"></p>
+        </div>
+
+        <section class="feed">
+            <h2>User's History</h2>
+            <div id="user-history-container">
+                <p class="loading">Loading user's history...</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="/js/utils.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const username = params.get('u');
+
+            if (!username) {
+                document.getElementById('profile-header').innerHTML = `<div class="alert alert-error">User not found.</div>`;
+                document.getElementById('user-history-container').innerHTML = '';
+                return;
+            }
+
+            try {
+                const data = await apiFetch(`/api/users/${username}`);
+                const { user, posts, comments } = data; // Assumes backend shape
+
+                document.getElementById('prof-username').textContent = `u/${user.username}`;
+                document.getElementById('prof-joined').textContent = `Redditor since ${new Date(user.created_at).toLocaleDateString()}`;
+
+                const container = document.getElementById('user-history-container');
+                
+                let html = '<h3>Posts</h3>';
+                if (!posts || posts.length === 0) {
+                    html += '<p style="margin-bottom: 2rem; color: var(--text-secondary);">This user has not made any posts.</p>';
+                } else {
+                    html += posts.map(p => `
+                        <article class="post-card">
+                            <h4 class="post-title"><a href="/post.html?id=${p.id}">${p.title}</a></h4>
+                            <div class="post-meta">In t/${p.community_slug} on ${new Date(p.created_at).toLocaleDateString()}</div>
+                        </article>
+                    `).join('');
+                }
+
+                html += '<h3 style="margin-top: 2rem;">Comments</h3>';
+                if (!comments || comments.length === 0) {
+                    html += '<p style="color: var(--text-secondary);">This user has not made any comments.</p>';
+                } else {
+                    html += comments.map(c => `
+                        <div class="post-card" style="padding: 1rem;">
+                            <div class="post-meta">Commented on <a href="/post.html?id=${c.post_id}">Post #${c.post_id}</a></div>
+                            <div style="margin-top: 0.5rem; white-space: pre-wrap;">${c.body}</div>
+                        </div>
+                    `).join('');
+                }
+
+                container.innerHTML = html;
+
+            } catch(err) {
+                document.getElementById('profile-header').innerHTML = `<div class="alert alert-error">Error: ${err.message}</div>`;
+                document.getElementById('user-history-container').innerHTML = '';
+            }
+        });
+    </script>
+</body>
+</html>

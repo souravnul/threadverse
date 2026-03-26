@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThreadVerse - Register</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <h1 class="logo"><a href="/">ThreadVerse</a></h1>
+            <nav id="nav-links">
+                <a href="/login.html">Login</a>
+                <a href="/register.html">Register</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="form-container">
+            <h2 style="margin-bottom: 2rem; text-align: center;">Create an Account</h2>
+            <div id="alert-container"></div>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required placeholder="Choose a username" minlength="3" maxlength="20">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required placeholder="Create a password" minlength="6">
+                </div>
+                <button type="submit" class="btn">Sign Up</button>
+            </form>
+            <p style="margin-top: 1.5rem; text-align: center; color: var(--text-secondary);">
+                Already have an account? <a href="/login.html">Log in</a>
+            </p>
+        </div>
+    </main>
+
+    <script src="/js/utils.js"></script>
+    <script src="/js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThreadVerse - Create Community</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <h1 class="logo"><a href="/">ThreadVerse</a></h1>
+            <nav id="nav-links"></nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="form-container">
+            <h2 style="margin-bottom: 2rem;">Create a Community</h2>
+            <div id="alert-container"></div>
+            <form id="create-community-form">
+                <div class="form-group">
+                    <label for="name">Community Name</label>
+                    <input type="text" id="name" required placeholder="e.g. JavaScript Developers" maxlength="50">
+                </div>
+                <!-- Slug is generated automatically in backend/frontend -->
+                <div class="form-group">
+                    <label for="description">Description (<span id="char-count">0</span>/500)</label>
+                    <textarea id="description" required placeholder="What is this community about?" maxlength="500"></textarea>
+                </div>
+                <button type="submit" class="btn">Create Community</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="/js/utils.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!getToken()) {
+                window.location.href = '/login.html';
+                return;
+            }
+
+            const alertContainer = document.getElementById('alert-container');
+            const form = document.getElementById('create-community-form');
+            const desc = document.getElementById('description');
+            const charCount = document.getElementById('char-count');
+
+            desc.addEventListener('input', () => {
+                charCount.textContent = desc.value.length;
+            });
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = form.querySelector('button');
+                btn.disabled = true;
+                btn.textContent = 'Creating...';
+
+                try {
+                    const name = document.getElementById('name').value;
+                    const description = desc.value;
+                    
+                    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+
+                    const data = await apiFetch('/api/communities/create', {
+                        method: 'POST',
+                        body: JSON.stringify({ name, slug, description })
+                    });
+
+                    window.location.href = `/community.html?slug=${data.slug}`;
+                } catch (err) {
+                    alertContainer.innerHTML = `<div class="alert alert-error">${err.message}</div>`;
+                    btn.disabled = false;
+                    btn.textContent = 'Create Community';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

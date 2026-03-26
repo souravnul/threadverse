@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThreadVerse - Community</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .community-header {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .community-info h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .community-info p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+        }
+        .community-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <h1 class="logo"><a href="/">ThreadVerse</a></h1>
+            <nav id="nav-links"></nav>
+        </div>
+    </header>
+
+    <main class="container main-layout" style="grid-template-columns: 1fr;">
+        <div id="alert-container"></div>
+        <div id="community-header-container">
+            <p class="loading">Loading community...</p>
+        </div>
+
+        <section class="feed">
+            <h2>Community Posts</h2>
+            <div id="posts-container">
+                <p class="loading">Loading posts...</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="/js/utils.js"></script>
+    <script src="/js/community.js"></script>
+</body>
+</html>

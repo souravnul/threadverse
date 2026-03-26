@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThreadVerse - Post</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .post-detail {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            white-space: pre-wrap; /* preserving newlines for post bodies */
+        }
+        .post-detail h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        .comment-section {
+            margin-top: 2rem;
+        }
+        .comment-input-area {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .comment-card {
+            background-color: var(--bg-color);
+            border-left: 2px solid var(--border-color);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+            margin-left: 0;
+        }
+        /* Nested comments spacing */
+        .comment-level-1 { margin-left: 2rem; }
+        .comment-level-2 { margin-left: 4rem; }
+        .comment-level-3 { margin-left: 6rem; }
+        
+        .comment-meta {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        .reply-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin-left: 1rem;
+            transition: color 0.1s;
+        }
+        .reply-btn:hover { color: var(--text-primary); }
+        .reply-box {
+            margin-top: 1rem;
+            display: none;
+        }
+        .reply-box.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <h1 class="logo"><a href="/">ThreadVerse</a></h1>
+            <nav id="nav-links"></nav>
+        </div>
+    </header>
+
+    <main class="container main-layout" style="grid-template-columns: 1fr;">
+        <div id="alert-container"></div>
+        <div id="post-container">
+            <p class="loading">Loading post...</p>
+        </div>
+
+        <section class="comment-section">
+            <div id="auth-comment-area"></div>
+            <h3>Comments</h3>
+            <div id="comments-container">
+                <p class="loading">Loading comments...</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="/js/utils.js"></script>
+    <script src="/js/post.js"></script>
+</body>
+</html>

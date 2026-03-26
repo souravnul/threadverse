@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThreadVerse - Create Post</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <h1 class="logo"><a href="/">ThreadVerse</a></h1>
+            <nav id="nav-links"></nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="form-container" style="max-width: 600px;">
+            <h2 style="margin-bottom: 2rem;">Create a Post</h2>
+            <div id="alert-container"></div>
+            <form id="create-post-form">
+                <div class="form-group">
+                    <label for="community-select">Select Community</label>
+                    <select id="community-select" required>
+                        <option value="" disabled selected>Loading communities...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" required placeholder="An interesting title" maxlength="300">
+                </div>
+                <div class="form-group">
+                    <label for="body">Post Content</label>
+                    <textarea id="body" required placeholder="What are your thoughts?" style="min-height: 250px;"></textarea>
+                </div>
+                <button type="submit" class="btn">Post to ThreadVerse</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="/js/utils.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!getToken()) {
+                window.location.href = '/login.html';
+                return;
+            }
+
+            const alertContainer = document.getElementById('alert-container');
+            const form = document.getElementById('create-post-form');
+            const comSelect = document.getElementById('community-select');
+            
+            // Auto-select community if passed via query param
+            const params = new URLSearchParams(window.location.search);
+            const preselectedId = params.get('community_id');
+
+            try {
+                const communities = await apiFetch('/api/communities');
+                comSelect.innerHTML = `<option value="" disabled selected>Choose a community</option>` + 
+                    communities.map(c => `<option value="${c.id}" ${c.id == preselectedId ? 'selected' : ''}>t/${c.slug} - ${c.name}</option>`).join('');
+            } catch (err) {
+                comSelect.innerHTML = `<option value="" disabled selected>Failed to load communities</option>`;
+            }
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = form.querySelector('button');
+                btn.disabled = true;
+                btn.textContent = 'Posting...';
+
+                try {
+                    const community_id = comSelect.value;
+                    const title = document.getElementById('title').value;
+                    const body = document.getElementById('body').value;
+                    
+                    if (!community_id) throw new Error("Please select a community.");
+
+                    const data = await apiFetch('/api/posts/create', {
+                        method: 'POST',
+                        body: JSON.stringify({ community_id: parseInt(community_id), title, body })
+                    });
+
+                    window.location.href = `/post.html?id=${data.id}`;
+                } catch (err) {
+                    alertContainer.innerHTML = `<div class="alert alert-error">${err.message}</div>`;
+                    btn.disabled = false;
+                    btn.textContent = 'Post to ThreadVerse';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
