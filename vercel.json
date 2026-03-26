@@ -1,5 +1,13 @@
 {
   "rewrites": [
+    { "source": "/api/auth/login", "destination": "/api/auth.js?action=login" },
+    { "source": "/api/auth/register", "destination": "/api/auth.js?action=register" },
+    { "source": "/api/communities/create", "destination": "/api/communities.js" },
+    { "source": "/api/communities", "destination": "/api/communities.js" },
+    { "source": "/api/posts/create", "destination": "/api/posts.js" },
+    { "source": "/api/posts", "destination": "/api/posts.js" },
+    { "source": "/api/comments/create", "destination": "/api/comments.js?action=create" },
+    { "source": "/api/comments/vote", "destination": "/api/comments.js?action=vote" },
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/(.*)", "destination": "/public/$1" }
   ]

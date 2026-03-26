@@ -32,10 +32,20 @@ app.use('/api', (req, res) => {
     // 1. Check for exact match file: e.g. /api/auth/login -> api/auth/login.js
     potentialFiles.push(path.join(apiBase, apiPath + '.js'));
     
-    // 2. Check for index file: e.g. /api/posts -> api/posts/index.js
-    potentialFiles.push(path.join(apiBase, apiPath, 'index.js'));
+    // 3. NEW: Check for parent file handlers: e.g. /api/auth/login -> api/auth.js
+    if (parts.length > 1) {
+        const topLevelFile = path.join(apiBase, parts[0] + '.js');
+        if (fs.existsSync(topLevelFile)) {
+           potentialFiles.push(topLevelFile);
+           // Append action to URL so Express/Handlers see it in req.query
+           const action = parts[1];
+           if (!req.url.includes('action=')) {
+               req.url = req.url + (req.url.includes('?') ? '&' : '?') + 'action=' + action;
+           }
+        }
+    }
     
-    // 3. Check for dynamic parameter files: [slug].js or [id].js
+    // 4. Check for dynamic parameter files: [slug].js or [id].js
     if (parts.length > 0) {
         const lastPart = parts[parts.length - 1];
         const parentPath = parts.slice(0, -1).join(path.sep);
